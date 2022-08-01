@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GradeTaskApp.SingleLinkList
 {
-	internal class SingleLinkList<T> : ISingleList<T>, IEnumerable<T>, IAlgorithm where T : IComparable
+	public class SingleLinkList<T> : ISingleList<T>, IEnumerable<T>, IAlgorithm where T : IComparable
     {
         private INode<T> head;
         private INode<T> tail;
@@ -193,6 +193,15 @@ namespace GradeTaskApp.SingleLinkList
                 pos++;
             }
         }
+
+        public INode<T> First()
+        {
+            return head;
+		}
+        public INode<T> Last() 
+        {
+            return tail;
+		}
         public IEnumerator<T> GetEnumerator()
         {
             INode<T> current = head;
@@ -253,8 +262,8 @@ namespace GradeTaskApp.SingleLinkList
 
         private void ChangePositions(INode<T> p1Prev, INode<T> p1, INode<T> p2Prev, INode<T> p2)
         {
-            if (p1 == p2) return;
             if (count == 0 || count == 1) return;
+            if (p1 == p2) return;
             if (count == 2) 
             {
                 if (p1 == head) {
@@ -302,5 +311,182 @@ namespace GradeTaskApp.SingleLinkList
                 }
             }
         }
-	}
+
+        /// <summary>
+        /// Natalia
+        /// </summary>
+        public void BubbleSort()
+        {
+            if (head == null)
+                return;
+            int iter = 0;
+            INode<T> current = tail;
+            INode<T> rightBorder = tail;
+            while (iter < count - 1)
+            {
+                do
+                {
+                    current = current.Next;
+                    if (current.Data.CompareTo(current.Next.Data) > 0)
+                    {
+                        var temp = current.Data;
+                        current.Data = current.Next.Data;
+                        current.Next.Data = temp;
+                    }
+                } while (current.Next != rightBorder);
+                rightBorder = current;
+                current = tail;
+                iter++;
+            }
+        }
+        /// <summary>
+        /// Denis
+        /// </summary>
+        public void Order()
+        {
+            INode<T> current = head;
+            INode<T> previous = tail;
+
+            for (int j = 1; j < count; j++)
+            {
+                for (int i = 0; i < count - 1; i++)
+                {
+                    if (current.Data.CompareTo(current.Next.Data) > 0)
+                    {
+                        var temp = current.Next.Next;
+                        current.Next.Next = current;
+                        previous.Next = current.Next;
+                        current.Next = temp;
+                        previous = previous.Next;
+                    }
+                    else
+                    {
+                        previous = current;
+                        current = current.Next;
+                    }
+                }
+                previous = current;
+                current = current.Next;
+            }
+
+            tail = previous;
+            head = current;
+        }
+        /// <summary>
+        /// Kostya
+        /// </summary>
+        public void Swap(INode<T> first, INode<T> second)
+        {
+            var temp = second.Data;
+            second.Data = first.Data;
+            first.Data = temp;
+        }
+        /// <summary>
+        /// Kostya simple sort
+        /// </summary>
+        public void SimpleSort()
+        {
+            var minItem = head;
+            var current = head.Next;
+
+            for (int i = 0; i < count; i++)
+            {
+                for (int j = i + 1; j < count; j++)
+                {
+                    var a = minItem.Data;
+                    var b = current.Data;
+
+                    if (a.CompareTo(b) == 1)
+                    {
+                        Swap(minItem, current);
+                    }
+                    current = current.Next;
+                }
+                minItem = minItem.Next;
+                current = minItem.Next;
+            }
+        }
+        /// <summary>
+        /// Kostya simple sort optimized by rost
+        /// </summary>
+        public void SimpleSortOptimezed()
+        {
+            var currentSt = head;
+            var min = currentSt;
+            for (int i = 0; i < count; i++)
+            {
+                var current = currentSt.Next;
+                for (int j = i + 1; j < count; j++)
+                {
+                    if (min.Data.CompareTo(current.Data) > 0)
+                    {
+                        min = current;
+                    }
+                    current = current.Next;
+                }
+                Swap(currentSt, min);
+                currentSt = currentSt.Next;
+            }
+        }
+        /// <summary>
+        /// Kostya
+        /// </summary>
+        public void QuickSort(int minIndex, int maxIndex)
+        {
+            if (minIndex >= maxIndex)
+            {
+                return;
+            }
+
+            int pivotIndex = GetPivotIndex(minIndex, maxIndex);
+
+            QuickSort(minIndex, pivotIndex - 1);
+            QuickSort(pivotIndex + 1, maxIndex);
+        }
+        /// <summary>
+        /// Kostya
+        /// </summary>
+        private int GetPivotIndex(int minIndex, int maxIndex)
+        {
+            int pivot = minIndex - 1;
+
+            for (int i = minIndex; i <= maxIndex; i++)
+            {
+                var current = GetNodeByIndex(i);
+                var next = GetNodeByIndex(maxIndex);
+
+                var a = current.Data as IComparable;
+                var b = next.Data as IComparable;
+
+                if (a.CompareTo(b) == -1)
+                {
+                    pivot++;
+                    Swap(GetNodeByIndex(pivot), current);
+                }
+            }
+            pivot++;
+            Swap(GetNodeByIndex(pivot), GetNodeByIndex(maxIndex));
+
+            return pivot;
+        }
+        /// <summary>
+        /// Kostya
+        /// </summary>
+        public INode<T> GetNodeByIndex(int index)
+        {
+            if (head == null || index >= count)
+            {
+                return default;
+            }
+            var current = head;
+            var counter = 0;
+
+            while (counter < index)
+            {
+                current = current.Next;
+                counter++;
+            }
+            return current;
+        }
+    }
 }

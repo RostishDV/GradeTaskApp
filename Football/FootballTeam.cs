@@ -15,13 +15,8 @@ namespace GradeTaskApp.Football
 			set {
 				if (index >= players.Length) 
 				{
-					//int len = players.Length * 2;
-					//while (index >= len)
-					//{
-					//	len *= 2;
-					//}
 					var tmp = players;
-					players = new Footballer[index * 2];//len
+					players = new Footballer[index * 2];
 					tmp.CopyTo(players, 0);
 				}
 				players[index] = value; 

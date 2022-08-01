@@ -6,7 +6,7 @@ using GradeTaskApp.SingleLinkList;
 namespace GradeTaskApp {
 	public class Program {
 		public static void Main(string[] args) {
-			TestSingleLinkList(); ;
+			TestSingleLinkList();
 		}
 
 		#region Football
@@ -35,22 +35,36 @@ namespace GradeTaskApp {
 
 			var list = new SingleLinkList<int>();
 			var rand = new Random();
-			for (int i = 0; i < 10; i++) {
-				list.Add(rand.Next(100));
+			for (int i = 0; i < 100; i++)
+			{
+				int number = rand.Next(0, 9000);
+				list.Add(number);
 			}
 			foreach (var link in list) { 
 				Console.Write(link + " ");
 			}
 			Console.WriteLine();
+
 			list.Sort();
+
 			foreach (var link in list)
 			{
 				Console.Write(link + " ");
 			}
-
+			// Test is sorted
+			var prev = list.First().Data;
+			foreach (var link in list)
+			{
+				if (prev.CompareTo(link) > 0)
+				{
+					Console.WriteLine("Not sorted prev =" + prev + "; cur = " + link);
+				}
+				prev = link;
+			}
 		}
 
 		#endregion
+	
 	}
 }
 
