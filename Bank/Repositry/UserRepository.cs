@@ -19,52 +19,53 @@ namespace GradeTaskApp.Bank
 
 		public void Create(User item)
 		{
-			var newUser = new User
-			{
-				Id = Guid.NewGuid(),
-				Name = item.Name,
-				Surname = item.Surname,
-				Patronimic = item.Patronimic,
-				Phone = item.Phone,
-				Passport = item.Passport,
-				RegistrationDate = DateTime.Now,
-				Login = item.Login,
-				Password = CalculatePasswordHash(item.Password),
-			};
-
+			item.SetDefaultColumnValues();
+			item.Password = CalculatePasswordHash(item.Password);
+			_bankContext.Users.Add(item);
+			_bankContext.SaveChanges();
 		}
 
-		public User FindById(int id)
+		public User FindById(Guid id)
 		{
-			throw new NotImplementedException();
+			return _bankContext.Users.Find(id);
 		}
 
 		public IEnumerable<User> Get()
 		{
-			throw new NotImplementedException();
+			return _bankContext.Users.ToList();
 		}
 
 		public IEnumerable<User> Get(Func<User, bool> predicate)
 		{
-			throw new NotImplementedException();
+			return _bankContext.Users.Where(predicate).ToList();
+		}
+
+		public void Remove(User item)
+		{
+			_bankContext.Users.Remove(item);
+			_bankContext.SaveChanges();
+		}
+
+		public void Update(User item)
+		{
+			_bankContext.Entry(item).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+			_bankContext.SaveChanges();
 		}
 
 		public User? GetUserByLogpass(string login, string password)
 		{
 			var passwordHash = CalculatePasswordHash(password);
-			User? user = _bankContext.Users.Where(x => 
+			User? user = _bankContext.Users.Where(x =>
 					x.Login == login && x.Password == passwordHash).FirstOrDefault();
 			return user;
 		}
 
-		public void Remove(User item)
+		public IEnumerable<User> GetUsersWithAccountAmountGreater(decimal amount)
 		{
-			throw new NotImplementedException();
-		}
-
-		public void Update(User item)
-		{
-			throw new NotImplementedException();
+			return _bankContext.Accounts.Where(x => x.Monny > amount).Join(_bankContext.Users,
+				a => a.UserId,
+				u => u.Id,
+				(a, u) => u).ToList();
 		}
 
 		private string CalculatePasswordHash(string password)

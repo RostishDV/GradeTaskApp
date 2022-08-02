@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GradeTaskApp.Bank.Entity
+namespace GradeTaskApp.Bank.IService
 {
-	public enum OperationType 
+	public interface ITestDataService
 	{
-		ADD,
-		SUBTRACT
+		public void AddTestData();
 	}
 }

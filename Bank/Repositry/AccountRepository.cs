@@ -10,40 +10,49 @@ namespace GradeTaskApp.Bank.Repositry
 {
 	public class AccountRepository : IAccountRepository
 	{
-		
+		private readonly BankContext _bankContext;
+		public AccountRepository(BankContext bankContext)
+		{
+			_bankContext = bankContext;
+		}
 		public void Create(Account item)
 		{
-			throw new NotImplementedException();
+			item.SetDefaultColumnValues();
+
+			_bankContext.Accounts.Add(item);
+			_bankContext.SaveChanges();
 		}
 
-		public Account FindById(int id)
+		public Account FindById(Guid id)
 		{
-			throw new NotImplementedException();
+			return _bankContext.Accounts.Find(id);
 		}
 
 		public IEnumerable<Account> Get()
 		{
-			throw new NotImplementedException();
+			return _bankContext.Accounts.ToList();
 		}
 
 		public IEnumerable<Account> Get(Func<Account, bool> predicate)
 		{
-			throw new NotImplementedException();
+			return _bankContext.Accounts.Where(predicate).ToList();
 		}
 
-		public IEnumerable<Account> GetByUser(User user)
+		public IEnumerable<Account> GetByUserId(Guid userId)
 		{
-			throw new NotImplementedException();
+			return _bankContext.Accounts.Where(x => x.UserId == userId).ToList();
 		}
 
 		public void Remove(Account item)
 		{
-			throw new NotImplementedException();
+			_bankContext.Accounts.Remove(item);
+			_bankContext.SaveChanges();
 		}
 
 		public void Update(Account item)
 		{
-			throw new NotImplementedException();
+			_bankContext.Entry(item).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+			_bankContext.SaveChanges();
 		}
 	}
 }

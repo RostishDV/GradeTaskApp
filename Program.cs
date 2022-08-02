@@ -1,4 +1,6 @@
 ﻿#region USINGS
+using GradeTaskApp.Bank;
+using GradeTaskApp.Bank.Services;
 using GradeTaskApp.Football;
 using GradeTaskApp.SingleLinkList;
 
@@ -6,7 +8,7 @@ using GradeTaskApp.SingleLinkList;
 namespace GradeTaskApp {
 	public class Program {
 		public static void Main(string[] args) {
-			TestSingleLinkList();
+			GenerateTestData();
 		}
 
 		#region Football
@@ -64,7 +66,32 @@ namespace GradeTaskApp {
 		}
 
 		#endregion
-	
+
+		#region Bank
+
+		private static void GenerateTestData()
+		{
+			BankContext context = new();
+			TestDataService dataService = new(context);
+			InfoService infoService = new(context);
+			//dataService.AddTestData();
+			var user = infoService.PrintUserInformationByLogpass("Ваня", "Vanya123");
+			Console.WriteLine("/===============================================");
+			Console.WriteLine();
+			var accounts = infoService.PrintAccountsInformationByUser(user);
+			Console.WriteLine("/===============================================");
+			Console.WriteLine();
+			infoService.PrintAccountsInformationWithHistoryByUser(user);
+			Console.WriteLine("/===============================================");
+			Console.WriteLine();
+			infoService.PrintAdditionTransitions();
+			Console.WriteLine("/===============================================");
+			Console.WriteLine();
+			infoService.PrintInformationAboutUsersWithMoney(1000);
+		}
+
+		#endregion
+
 	}
 }
 

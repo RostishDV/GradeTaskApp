@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace GradeTaskApp.Bank.IRepositry
 {
-	public interface IAccountRepository : IDefaultRepository<Account>
+	public interface IHistoryRepository : IDefaultRepository<History>
 	{
-		public IEnumerable<Account> GetByUserId(Guid userId);
+		public IEnumerable<History> GetByAccount(Guid accountId);
+		public Dictionary<History, User> GetAdditions();
 	}
 }
