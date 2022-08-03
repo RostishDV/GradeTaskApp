@@ -1,5 +1,6 @@
 ﻿using GradeTaskApp.Bank.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace GradeTaskApp.Bank
 {
