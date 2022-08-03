@@ -1,10 +1,5 @@
 ﻿using GradeTaskApp.Bank.Entity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GradeTaskApp.Bank
 {
@@ -20,7 +15,9 @@ namespace GradeTaskApp.Bank
 		}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=GradeTaskBank;Username=postgres;Password=1");
+			optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information)
+				.EnableSensitiveDataLogging();
+			optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=GradeTaskBank;Username=postgres;Password=1");
         }
     }
 }

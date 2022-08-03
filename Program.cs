@@ -74,6 +74,7 @@ namespace GradeTaskApp {
 			BankContext context = new();
 			TestDataService dataService = new(context);
 			InfoService infoService = new(context);
+			dataService.CheckUserExist("Ваня", "Vanya123");
 			//dataService.AddTestData();
 			var user = infoService.PrintUserInformationByLogpass("Ваня", "Vanya123");
 			Console.WriteLine("/===============================================");

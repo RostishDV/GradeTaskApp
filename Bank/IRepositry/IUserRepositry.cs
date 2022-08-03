@@ -1,9 +1,4 @@
 ﻿using GradeTaskApp.Bank.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GradeTaskApp.Bank.IRepositry
 {
@@ -11,5 +6,6 @@ namespace GradeTaskApp.Bank.IRepositry
 	{
 		public User GetUserByLogpass(string login, string password);
 		public IEnumerable<User> GetUsersWithAccountAmountGreater(decimal amount);
+		public bool CheckUserExists(string login, string password);
 	}
 }

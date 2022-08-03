@@ -2,11 +2,6 @@
 using GradeTaskApp.Bank.IRepositry;
 using GradeTaskApp.Bank.IService;
 using GradeTaskApp.Bank.Repositry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GradeTaskApp.Bank.Services
 {
@@ -56,6 +51,10 @@ namespace GradeTaskApp.Bank.Services
 			}
 		}
 
+		public bool CheckUserExist(string login, string password)
+		{
+			return _userRepositry.CheckUserExists(login, password);
+		}
 		private IEnumerable<User> GenerateUsers()
 		{
 			var user1 = new User()

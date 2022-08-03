@@ -1,9 +1,5 @@
 ﻿using GradeTaskApp.Bank.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Security.Cryptography;
 using GradeTaskApp.Bank.IRepositry;
 
@@ -58,6 +54,14 @@ namespace GradeTaskApp.Bank
 			User? user = _bankContext.Users.Where(x =>
 					x.Login == login && x.Password == passwordHash).FirstOrDefault();
 			return user;
+		}
+
+		public bool CheckUserExists(string login, string password)
+		{
+			var passwordHash = CalculatePasswordHash(password);
+			var query = _bankContext.Users.Where(x =>
+					x.Login == login);
+			return query.Any(x=> x.Password == passwordHash);
 		}
 
 		public IEnumerable<User> GetUsersWithAccountAmountGreater(decimal amount)
