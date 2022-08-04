@@ -64,19 +64,23 @@ namespace GradeTaskApp.Bank.Services
 		/// <param name="user"></param>
 		public void PrintAccountsInformationWithHistoryByUser(User user)
 		{
+			var accountsHistories = _historyRepository.GetHistoriesWithAccountByUserId(user.Id);
 			var currentUser = _userRepositry.FindById(user.Id);
 			Console.WriteLine("Для пользователя " + currentUser.Name + " " + currentUser.Surname + ":");
 			var accountNumber = 1;
-			var accounts = _accountRepository.GetByUserId(currentUser.Id);
-			foreach (var account in accounts) {
+			foreach (var accountHistories in accountsHistories)
+			{
+				var account = accountHistories.Key;
 				Console.WriteLine("\tПо счету " + accountNumber + " с текущим балансом " + 
 					account.Monny + ", выполнены операции:");
 				var historyNumber = 1;
-				var histories = _historyRepository.GetByAccount(account.Id);
-				foreach (var history in histories) {
+
+				foreach (var history in accountHistories.Value)
+				{
 					Console.WriteLine("\t\t" + history.Created + 
 						(history.OperationType == OperationType.ADD ? " Пополнение на : ": " Списание : ") +
 						history.Amount + " денег");
+					historyNumber++;
 				}
 				accountNumber++;
 			}

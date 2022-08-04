@@ -6,5 +6,6 @@ namespace GradeTaskApp.Bank.IRepositry
 	{
 		public IEnumerable<History> GetByAccount(Guid accountId);
 		public Dictionary<History, User> GetAdditions();
+		public Dictionary<Account, List<History>> GetHistoriesWithAccountByUserId(Guid userId);
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using GradeTaskApp.Bank.Entity;
 using GradeTaskApp.Bank.IRepositry;
+using System.Linq;
 
 namespace GradeTaskApp.Bank.Repositry
 {
@@ -54,6 +55,23 @@ namespace GradeTaskApp.Bank.Repositry
 						History = ha.History,
 						User = u
 					}).ToDictionary(o => o.History, o => o.User);
+		}
+
+		public Dictionary<Account, List<History>> GetHistoriesWithAccountByUserId(Guid userId)
+		{
+			Dictionary < Account, List<History>> dict = _bankContext.History.Join(_bankContext.Accounts.Where(a => a.UserId == userId),
+				h => h.AccountId,
+				a => a.Id,
+				(h, a) => new {
+					History = h,
+					Account = a
+				}).ToList().GroupBy(x => x.Account)
+				.ToDictionary(g => g.Key, g => g.Select(x => x.History).ToList());
+			var keys = dict.Keys;
+			Dictionary<Account, List<History>> accWithoutHistories = _bankContext.Accounts.Where(x => !keys.Contains(x) && x.UserId == userId)
+				.ToDictionary(g => g, g => { return new List<History>(); });
+			
+			return dict.Union(accWithoutHistories).ToDictionary(x => x.Key, x => x.Value);
 		}
 
 		public void Remove(History item)
