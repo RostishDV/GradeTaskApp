@@ -59,6 +59,32 @@ namespace GradeTaskApp.Bank.Repositry
 
 		public Dictionary<Account, List<History>> GetHistoriesWithAccountByUserId(Guid userId)
 		{
+			var t = (from acc in _bankContext.Accounts.Where(x => x.UserId == userId).ToList()
+					 join history in _bankContext.History
+						 on acc.Id equals history.AccountId into historyJoin
+					 select new
+					 {
+						 Account = acc,
+						 History = historyJoin.DefaultIfEmpty()
+					 }).ToList();
+
+			var t2 = (from acc in _bankContext.Accounts.Where(a => a.UserId == userId)
+					  from history in _bankContext.History.Where(h => h.AccountId == acc.Id).DefaultIfEmpty()
+					  select new
+					  {
+						  Account = acc,
+						  History = history
+					  }).ToList().GroupBy(h => h.Account).ToDictionary(h => h.Key, x => x.Select(_ => _.History));
+
+			//var t = _bankContext.Accounts.Join(_bankContext.History,
+			//	a => a.Id,
+			//	h => h.AccountId,
+			//	(a, h) => new
+			//	{
+			//		Account = a,
+			//		History = h,
+			//	}).ToList();
+
 			Dictionary < Account, List<History>> dict = _bankContext.History.Join(_bankContext.Accounts.Where(a => a.UserId == userId),
 				h => h.AccountId,
 				a => a.Id,

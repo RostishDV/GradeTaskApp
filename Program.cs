@@ -8,7 +8,7 @@ using GradeTaskApp.SingleLinkList;
 namespace GradeTaskApp {
 	public class Program {
 		public static void Main(string[] args) {
-			GenerateTestData();
+			TestWebsiteParser();
 		}
 
 		#region Football
@@ -37,7 +37,7 @@ namespace GradeTaskApp {
 
 			var list = new SingleLinkList<int>();
 			var rand = new Random();
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < 10000; i++)
 			{
 				int number = rand.Next(0, 9000);
 				list.Add(number);
@@ -47,7 +47,7 @@ namespace GradeTaskApp {
 			}
 			Console.WriteLine();
 
-			list.Sort();
+			list.AlexseySort();
 
 			foreach (var link in list)
 			{
@@ -93,6 +93,19 @@ namespace GradeTaskApp {
 
 		#endregion
 
+		#region WebsiteParser
+
+		private static void TestWebsiteParser()
+		{
+			var startUrl = @"https://regex101.com/";
+			var urls = GradeTaskApp.WebsiteParser.WebsiteParser.GetURLsFromSite(startUrl);
+			foreach (var url in urls)
+			{
+				Console.WriteLine(url);
+			}
+		}
+
+		#endregion
 	}
 }
 

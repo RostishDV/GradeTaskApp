@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GradeTaskApp.SingleLinkList
 {
-	public class SingleLinkList<T> : ISingleList<T>, IEnumerable<T>, IAlgorithm where T : IComparable
+    public class SingleLinkList<T> : ISingleList<T>, IEnumerable<T>, IAlgorithm where T : IComparable
     {
         private INode<T> head;
         private INode<T> tail;
@@ -15,9 +15,11 @@ namespace GradeTaskApp.SingleLinkList
 
         public int Count { get { return count; } set { count = value; } }
 
-		public bool IsReadOnly => throw new NotImplementedException();
+        public bool IsReadOnly => throw new NotImplementedException();
 
-		public T this[int index] { get
+        public T this[int index]
+        {
+            get
             {
                 INode<T> current = head;
                 int pos = 0;
@@ -28,16 +30,16 @@ namespace GradeTaskApp.SingleLinkList
                 }
                 return current.Data;
             }
-            set 
-            { 
-                Insert(index, value); 
-            } 
+            set
+            {
+                Insert(index, value);
+            }
         }
 
         public bool Remove(T data)
         {
 
-            if (count == 1) 
+            if (count == 1)
             {
                 if (head.Data.Equals(data))
                 {
@@ -45,7 +47,7 @@ namespace GradeTaskApp.SingleLinkList
                     return true;
                 }
                 return false;
-			}
+            }
 
             INode<T> current = head;
             INode<T> previous = null;
@@ -100,8 +102,8 @@ namespace GradeTaskApp.SingleLinkList
             return false;
         }
 
-		public int IndexOf(T item)
-		{
+        public int IndexOf(T item)
+        {
             if (count == 0) return -1;
 
             INode<T> current = head;
@@ -116,24 +118,25 @@ namespace GradeTaskApp.SingleLinkList
             return -1;
         }
 
-		public void Insert(int index, T item)
-		{
+        public void Insert(int index, T item)
+        {
             if (index > count) Add(item);
             if (index < 0) return;
 
             INode<T> current = head;
             INode<T> previous = null;
             int pos = 0;
-            
+
             while (pos < count)
             {
                 if (pos == index)
                 {
                     INode<T> newItem = new Node<T>(item);
-                    if (previous != null) {
+                    if (previous != null)
+                    {
                         previous.Next = newItem;
                         newItem.Next = current;
-					}
+                    }
                     newItem.Next = current;
                     head = newItem;
                     tail.Next = head;
@@ -146,8 +149,8 @@ namespace GradeTaskApp.SingleLinkList
             }
         }
 
-		public void RemoveAt(int index)
-		{
+        public void RemoveAt(int index)
+        {
             if (count == 0) return;
 
             INode<T> current = head;
@@ -163,8 +166,8 @@ namespace GradeTaskApp.SingleLinkList
             }
         }
 
-		public void Add(T item)
-		{
+        public void Add(T item)
+        {
             INode<T> node = new Node<T>(item);
 
             if (head == null)
@@ -182,8 +185,8 @@ namespace GradeTaskApp.SingleLinkList
             count++;
         }
 
-		public void CopyTo(T[] array, int arrayIndex)
-		{
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             INode<T> current = head;
             int pos = 0;
             while (pos < count)
@@ -197,11 +200,11 @@ namespace GradeTaskApp.SingleLinkList
         public INode<T> First()
         {
             return head;
-		}
-        public INode<T> Last() 
+        }
+        public INode<T> Last()
         {
             return tail;
-		}
+        }
         public IEnumerator<T> GetEnumerator()
         {
             INode<T> current = head;
@@ -222,8 +225,8 @@ namespace GradeTaskApp.SingleLinkList
             return this.GetEnumerator();
         }
 
-		public void Sort()
-		{
+        public void Sort()
+        {
             INode<T> start = head;
             INode<T> stPrev = tail;
             int startPos = 0;
@@ -235,41 +238,45 @@ namespace GradeTaskApp.SingleLinkList
                 INode<T> previos = start;
                 INode<T> current = start.Next;
                 int curPos = startPos + 1;
-                while (curPos < count){
+                while (curPos < count)
+                {
                     if (current.Data.CompareTo(min.Data) < 0)
                     {
                         minPrev = previos;
-				        min = current;
+                        min = current;
                     }
                     previos = current;
                     current = current.Next;
                     curPos++;
-				}
+                }
 
                 ChangePositions(stPrev, start, minPrev, min);
-                if (min != start){
+                if (min != start)
+                {
                     stPrev = min;
                     start = min.Next;
-                } else
+                }
+                else
                 {
                     stPrev = start;
                     start = start.Next;
-				}
-                
+                }
+
                 startPos++;
             }
-		}
+        }
 
         private void ChangePositions(INode<T> p1Prev, INode<T> p1, INode<T> p2Prev, INode<T> p2)
         {
             if (count == 0 || count == 1) return;
             if (p1 == p2) return;
-            if (count == 2) 
+            if (count == 2)
             {
-                if (p1 == head) {
+                if (p1 == head)
+                {
                     tail = p1;
                     head = p2;
-				}
+                }
                 if (p2 == head)
                 {
                     tail = p2;
@@ -279,34 +286,45 @@ namespace GradeTaskApp.SingleLinkList
             INode<T> p1Next = p1.Next;
             INode<T> p2Next = p2.Next;
 
-            if (p1Next == p2){
+            if (p1Next == p2)
+            {
                 p1Prev.Next = p2;
                 p2.Next = p1;
                 p1.Next = p2Next;
-            } else if (p2Next == p1) {
+            }
+            else if (p2Next == p1)
+            {
                 p2Prev.Next = p1;
                 p1.Next = p2;
                 p2.Next = p1;
-			} else {
+            }
+            else
+            {
                 p1Prev.Next = p2;
                 p1.Next = p2Next;
                 p2Prev.Next = p1;
                 p2.Next = p1Next;
             }
 
-            if (p1 == head || p2 == head) {
-                if (p1 == head) {
+            if (p1 == head || p2 == head)
+            {
+                if (p1 == head)
+                {
                     head = p2;
-				} else {
+                }
+                else
+                {
                     head = p1;
-				}
-			}
+                }
+            }
             if (p1 == tail || p2 == tail)
             {
                 if (p1 == tail)
                 {
                     tail = p2;
-                } else {
+                }
+                else
+                {
                     tail = p1;
                 }
             }
@@ -487,6 +505,78 @@ namespace GradeTaskApp.SingleLinkList
                 counter++;
             }
             return current;
+        }
+
+        /// <summary>
+        /// Slava
+        /// </summary>
+        public void SlavniySortIr()
+        {
+            INode<T> current = head;
+            INode<T> previous = tail;
+            bool isNotSorted = true;
+
+            while (isNotSorted)
+            {
+                isNotSorted = false;
+
+                for (int i = 0; i < Count - 1; i++)
+                {
+                    var currentData = current.Data as IComparable<T>;
+
+                    if (currentData.CompareTo(current.Next.Data) > 0)
+                    {
+                        INode<T> cache;
+                        if (Count == 2)
+                        {
+                            cache = head;
+                            head = tail;
+                            tail = cache;
+                            break;
+                        }
+                        cache = current.Next.Next;
+                        previous.Next = current.Next;
+                        previous.Next.Next = current;
+                        current.Next = cache;
+                        isNotSorted = true;
+
+                        if (i == 0)
+                            head = previous.Next;
+                    }
+                    previous = previous.Next;
+                    current = previous.Next;
+                }
+
+                tail = current;
+                head = current.Next;
+                current = head;
+                previous = tail;
+            }
+        }
+
+        /// <summary>
+        /// Alexey
+        /// </summary>
+        public void AlexseySort()
+        {
+            var cur = head;
+            while (true)
+            {
+                var index = cur.Next;
+                while (index != head )
+                {
+                    if (cur.Data.CompareTo(index.Data) > 0)
+                    {
+                        var temp = cur.Data;
+                        cur.Data = index.Data;
+                        index.Data = temp;
+					}
+                    index = index.Next;
+				}
+                cur = cur.Next;
+                if (cur.Next == head)
+                    break;
+			}
         }
     }
 }

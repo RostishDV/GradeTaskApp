@@ -9,6 +9,18 @@ namespace GradeTaskApp.Bank.Entity
 		public Guid UserId { get; set; }
 
 		public User User { get; set; }
-		public List<History> Histories { get; set; }
+		public IEnumerable<History> Histories { get; set; }
+
+		public Account()
+		{
+
+		}
+
+		public Account(decimal _monny, Guid _userId, IEnumerable<History> _histories)
+		{
+			Monny = _monny;
+			UserId = _userId;
+			Histories = _histories;
+		}
 	}
 }
