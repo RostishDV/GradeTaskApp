@@ -6,12 +6,13 @@ using GradeTaskApp.SingleLinkList;
 using GradeTaskApp.Person;
 using System.Reflection;
 using GradeTaskApp.Summator;
+using GradeTaskApp.Users;
 
 #endregion
 namespace GradeTaskApp {
 	public class Program {
 		public static void Main(string[] args) {
-			TestSummator();
+			TestDelegate();
 		}
 
 		#region Football
@@ -110,7 +111,7 @@ namespace GradeTaskApp {
 
 		#endregion
 
-		#region: Person Reflection
+		#region Person Reflection
 		public static void TestPersonReflection()
 		{
 			Console.WriteLine("=== Class info  ===");
@@ -141,7 +142,7 @@ namespace GradeTaskApp {
 
 		#endregion
 
-		#region: Summator
+		#region Summator
 
 		public static void TestSummator()
 		{
@@ -162,6 +163,25 @@ namespace GradeTaskApp {
 				{
 					Console.WriteLine(method.Invoke(new SimpleSummator(), new object[] { 10, 25, 35, 45 }));
 				}
+			}
+		}
+
+		#endregion
+
+		#region Users delegate filter
+
+		public static void TestDelegate()
+		{
+			var userDbSet = new UsersDbSet();
+			userDbSet.Add(new User { Name = "Ivan", Surname = "Petrovich" });
+			userDbSet.Add(new User { Name = "Ivan", Surname = "Ivanovich" });
+			userDbSet.Add(new User { Name = "Ivan", Surname = "Petrov" });
+			userDbSet.Add(new User { Name = "Pavel", Surname = "Dolgov" });
+
+			var users = userDbSet.GetUsers(x => x.Name == "Ivan");
+			foreach(var user in users)
+			{
+				Console.WriteLine(user.Name + " " + user.Surname);
 			}
 		}
 
