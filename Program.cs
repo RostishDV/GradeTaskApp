@@ -3,12 +3,14 @@ using GradeTaskApp.Bank;
 using GradeTaskApp.Bank.Services;
 using GradeTaskApp.Football;
 using GradeTaskApp.SingleLinkList;
+using GradeTaskApp.Person;
+using System.Reflection;
 
 #endregion
 namespace GradeTaskApp {
 	public class Program {
 		public static void Main(string[] args) {
-			TestWebsiteParser();
+			TestPersonReflection();
 		}
 
 		#region Football
@@ -102,6 +104,37 @@ namespace GradeTaskApp {
 			foreach (var url in urls)
 			{
 				Console.WriteLine(url);
+			}
+		}
+
+		#endregion
+
+		#region: Person Reflection
+		public static void TestPersonReflection()
+		{
+			Console.WriteLine("=== Class info  ===");
+			Person.Person.PrintClassInfo();
+			Console.WriteLine("=== Object info ===");
+			var person = new Person.Person();
+			person.Name = "Ivan";
+			person.Surname = "Ivanov";
+			person.Patronimic = "Ivanovich";
+			person.PrintObjectInfo();
+
+			var personType = person.GetType();
+			var personFields = personType.GetFields(BindingFlags.Instance |
+					   BindingFlags.NonPublic);
+			foreach (var field in personFields)
+			{
+				if (field.Name == "_salary")
+				{
+					field.SetValue(person, (decimal)140000);
+				}
+			}
+			var method = person.GetType().GetMethod("SayInfo");
+			if (method != null)
+			{
+				method.Invoke(person, null);
 			}
 		}
 
