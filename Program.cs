@@ -5,12 +5,13 @@ using GradeTaskApp.Football;
 using GradeTaskApp.SingleLinkList;
 using GradeTaskApp.Person;
 using System.Reflection;
+using GradeTaskApp.Summator;
 
 #endregion
 namespace GradeTaskApp {
 	public class Program {
 		public static void Main(string[] args) {
-			TestPersonReflection();
+			TestSummator();
 		}
 
 		#region Football
@@ -135,6 +136,32 @@ namespace GradeTaskApp {
 			if (method != null)
 			{
 				method.Invoke(person, null);
+			}
+		}
+
+		#endregion
+
+		#region: Summator
+
+		public static void TestSummator()
+		{
+			var methods = typeof(SimpleSummator).GetMethods(BindingFlags.Instance |
+					BindingFlags.Public);
+			foreach (var method in methods)
+			{
+				var parameter = method.GetParameters();
+				if (parameter.Length == 2)
+				{
+					Console.WriteLine(method.Invoke(new SimpleSummator(), new object[] { 10, 25 }));
+				}
+				if (parameter.Length == 3)
+				{
+					Console.WriteLine(method.Invoke(new SimpleSummator(), new object[] { 10, 25, 35 }));
+				}
+				if (parameter.Length == 4)
+				{
+					Console.WriteLine(method.Invoke(new SimpleSummator(), new object[] { 10, 25, 35, 45 }));
+				}
 			}
 		}
 
