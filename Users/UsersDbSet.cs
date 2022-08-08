@@ -15,8 +15,9 @@ namespace GradeTaskApp.Users
 			_users.Add(user);
 		}
 
-		public List<User> GetUsers(Filter filter)
+		public List<User> GetUsers(Func<User, bool> filter)
 		{
+			var result = _users.Where(filter);
 			var users = new List<User>();
 			foreach (var user in _users)
 			{
@@ -34,6 +35,4 @@ namespace GradeTaskApp.Users
 		public string Name { get; set; }
 		public string Surname { get; set; }
 	};
-
-	public delegate bool Filter(User user);
 }
