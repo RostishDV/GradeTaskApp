@@ -12,7 +12,7 @@ using GradeTaskApp.Users;
 namespace GradeTaskApp {
 	public class Program {
 		public static void Main(string[] args) {
-			TestFieldNameValue();
+			TestValidators();
 		}
 
 		#region Football
@@ -201,6 +201,38 @@ namespace GradeTaskApp {
 			foreach (var user in users)
 			{
 				Console.WriteLine(user.Name + " " + user.Surname);
+			}
+		}
+
+		#endregion
+
+		#region User validators
+
+		public static void TestValidators()
+		{
+			var usersDbSet = new UsersDbSet();
+			var validUser = new User 
+			{ 
+				Name ="Valid",
+				Surname = "Vilidovich",
+				Email = "some@email.com",
+				Phone = "+7(917) 654-78-98"
+			};
+
+			var invalidUser = new User
+			{
+				Name = "Valid",
+				Surname = "Vilidovich",
+				Email = "abc",
+				Phone = "def"
+			};
+			usersDbSet.Add(validUser);
+			usersDbSet.Add(invalidUser);
+			Console.WriteLine("Валидные:");
+			var users = usersDbSet.GetUsers(x => true);
+			foreach (var user in users)
+			{
+				Console.WriteLine($"name = {user.Name}, surname = {user.Surname}, email = {user.Email}, phone = {user.Phone}");
 			}
 		}
 

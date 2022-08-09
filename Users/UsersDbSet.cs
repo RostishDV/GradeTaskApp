@@ -1,13 +1,25 @@
-﻿using System.Reflection;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace GradeTaskApp.Users
 {
 	public class UsersDbSet
 	{
 		private List<User> _users = new List<User>();
-
 		public void Add(User user)
 		{
+			var сontext = new ValidationContext(user);
+			var results = new List<ValidationResult>();
+			if (user == null) return;
+			if (!Validator.TryValidateObject(user, сontext, results, true))
+			{
+				Console.WriteLine("Не удалось добавить пользователя");
+				foreach (var item in results)
+				{
+					Console.WriteLine(item.ErrorMessage);
+				}
+				return;
+			}
 			_users.Add(user);
 		}
 
@@ -45,5 +57,9 @@ namespace GradeTaskApp.Users
 		public string Name { get; set; }
 
 		public string Surname { get; set; }
+		[EmailValidator]
+		public string Email { get; set; }
+		[PhoneValidator]
+		public string Phone { get; set; }
 	};
 }
