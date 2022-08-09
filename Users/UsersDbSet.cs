@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 
 namespace GradeTaskApp.Users
 {
@@ -28,11 +24,26 @@ namespace GradeTaskApp.Users
 			}
 			return users;
 		}
+
+		public List<User> GetUsers(string fieldName, object value)
+		{
+			var userType = typeof(User);
+			var field = userType.GetField($"<{fieldName}>k__BackingField", BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic);
+			if (field == null) return new List<User>();
+
+			return _users.Where((user) => {
+				var fieldValue = field.GetValue(user);
+				if (fieldValue == null)
+					return false;
+				return fieldValue.Equals(value);
+			}).ToList();
+		}
 	}
 
 	public class User
 	{
 		public string Name { get; set; }
+
 		public string Surname { get; set; }
 	};
 }

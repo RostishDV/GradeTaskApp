@@ -12,7 +12,7 @@ using GradeTaskApp.Users;
 namespace GradeTaskApp {
 	public class Program {
 		public static void Main(string[] args) {
-			TestDelegate();
+			TestFieldNameValue();
 		}
 
 		#region Football
@@ -180,6 +180,25 @@ namespace GradeTaskApp {
 
 			var users = userDbSet.GetUsers(x => x.Name == "Ivan");
 			foreach(var user in users)
+			{
+				Console.WriteLine(user.Name + " " + user.Surname);
+			}
+		}
+
+		#endregion
+
+		#region Users by FieldName FieldValue
+
+		public static void TestFieldNameValue()
+		{
+			var userDbSet = new UsersDbSet();
+			userDbSet.Add(new User { Name = "Ivan", Surname = "Petrovich" });
+			userDbSet.Add(new User { Name = "Ivan", Surname = "Ivanovich" });
+			userDbSet.Add(new User { Name = "Ivan", Surname = "Petrov" });
+			userDbSet.Add(new User { Name = "Pavel", Surname = "Dolgov" });
+
+			var users = userDbSet.GetUsers("Name", "Ivan");
+			foreach (var user in users)
 			{
 				Console.WriteLine(user.Name + " " + user.Surname);
 			}

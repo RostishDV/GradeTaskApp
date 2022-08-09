@@ -76,15 +76,6 @@ namespace GradeTaskApp.Bank.Repositry
 						  History = history
 					  }).ToList().GroupBy(h => h.Account).ToDictionary(h => h.Key, x => x.Select(_ => _.History));
 
-			//var t = _bankContext.Accounts.Join(_bankContext.History,
-			//	a => a.Id,
-			//	h => h.AccountId,
-			//	(a, h) => new
-			//	{
-			//		Account = a,
-			//		History = h,
-			//	}).ToList();
-
 			Dictionary < Account, List<History>> dict = _bankContext.History.Join(_bankContext.Accounts.Where(a => a.UserId == userId),
 				h => h.AccountId,
 				a => a.Id,
